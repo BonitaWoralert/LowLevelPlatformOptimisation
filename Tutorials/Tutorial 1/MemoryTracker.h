@@ -1,13 +1,11 @@
 #pragma once
+static int AllocatedBytes;
 class MemoryTracker
 {
 public:
-	MemoryTracker();
-	~MemoryTracker();
-	void AddBytesAllocated(int numberOfBytes);
-	void RemoveBytesAllocated(int numberOfBytes);
-
+	static void AddBytesAllocated(int numberOfBytes);
+	static void RemoveBytesAllocated(int numberOfBytes);
+	static int GetAllocated() { return AllocatedBytes; }
 private:
-	int AllocatedBytes;
 };
 

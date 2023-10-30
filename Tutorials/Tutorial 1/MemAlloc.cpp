@@ -42,6 +42,7 @@ void* operator new (size_t size, MemoryTracker* pTracker)
 	pTracker->AddBytesAllocated(size); // send bytes to memory tracker
 	pHeader->size = size; //set size int to the same as size passed into new
 	pHeader->tracker = pTracker;
+	pTracker->AddBytesAllocated(size);
 
 	std::cout << "Value in header in new = " << pHeader->size << std::endl;
 
@@ -69,7 +70,9 @@ void operator delete (void* pMem, MemoryTracker* pTracker)
 	Header* pHeader = (Header*)((char*)pMem - sizeof(Header)); //header = sizeof(Header) bytes before start
 	Footer* pFooter = (Footer*)((char*)pMem + pHeader->size); //footer
 
-
+	pTracker = pHeader->tracker;
+	pTracker->RemoveBytesAllocated(pHeader->size);
+	std::cout << "tracker bytes : " << pTracker->GetAllocated() << std::endl;
 
 	std::cout << "Value in header on delete = " << pHeader->size << std::endl;
 	free(pHeader);
