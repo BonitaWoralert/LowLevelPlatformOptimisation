@@ -5,9 +5,12 @@
 
 int main()
 {
-    MemoryTracker* defaultTracker = (MemoryTracker*)malloc(sizeof(MemoryTracker*));
+    static MemoryTracker* defaultTracker = new MemoryTracker;
+
+    //delete[] pleaseFUCKINGWORK;
 
     //int* newArr = new int[10]; //allocate memory using new
+
     //int* mallocArr = (int*)malloc(sizeof(int) * 10); //allocate memory using malloc
 
     //MyObject* object = new MyObject(); //create class using new

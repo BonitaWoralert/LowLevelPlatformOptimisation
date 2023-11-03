@@ -1,2 +1,2 @@
 ﻿  Tutorial 1.cpp
-  Tutorial 1.vcxproj -> C:\Users\w017620l\Documents\GitHub\physio-2023-24-BonitaWoralert\Tutorials\x64\Debug\Tutorial 1.exe
+E:\gamedev\physio-2023-24-BonitaWoralert\Tutorials\Tutorial 1\Tutorial 1.cpp(12,5): error C2144: syntax error: 'int' should be preceded by ';'
