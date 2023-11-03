@@ -1,6 +1,5 @@
 ﻿  main.cpp
-  MemAlloc.cpp
+  Vec3.cpp
   Generating Code...
-  Physio.vcxproj -> E:\gamedev\physio-2023-24-BonitaWoralert\Debug\Physio.exe
-  E:\gamedev\physio-2023-24-BonitaWoralert\glut\bin\freeglut.dll
-  1 File(s) copied
+  Physio.vcxproj -> C:\Users\Bonita\Documents\GitHub\physio-2023-24-BonitaWoralert\Debug\Physio.exe
+  0 File(s) copied

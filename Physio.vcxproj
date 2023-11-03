@@ -174,10 +174,16 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MemAlloc.cpp" />
+    <ClCompile Include="Vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Callbacks.h" />
     <ClInclude Include="MemAlloc.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Vec3.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Physio.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

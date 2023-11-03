@@ -10,10 +10,11 @@
 #include <GL/glut.h>
 #include <vector>
 #include <iostream>
-#include <cmath>
 #include <cstdlib>
 #include <ctime>
 #include <chrono>
+
+#include "Vec3.h"
 
 using namespace std::chrono;
 
@@ -35,35 +36,6 @@ using namespace std::chrono;
 #define minZ -30.0f
 #define maxZ 30.0f
 
-
-class Vec3 {
-public:
-    float x, y, z;
-
-    Vec3() : x(0.0f), y(0.0f), z(0.0f) {}
-    Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
-
-    // overload the minus operator
-    Vec3 operator-(const Vec3& other) const {
-        return Vec3(x - other.x, y - other.y, z - other.z);
-    }
-
-    // Normalize the vector
-    void normalise() {
-        float length = std::sqrt(x * x + y * y + z * z);
-        if (length != 0) {
-            x /= length;
-            y /= length;
-            z /= length;
-        }
-    }
-
-    // get the length of a vector
-    float length() const {
-        return std::sqrt(x * x + y * y + z * z);
-    }
-};
-
 // the box (falling item)
 struct Box {
     Vec3 position;
@@ -71,7 +43,6 @@ struct Box {
     Vec3 velocity;
     Vec3 colour; 
 };
-
 
 // gravity - change it and see what happens (usually negative!)
 const float gravity = -19.81f;
@@ -89,8 +60,7 @@ void initScene(int boxCount) {
         box.size = {1.0f, 1.0f, 1.0f};
 
         // Assign random x-velocity between -1.0f and 1.0f
-        float randomXVelocity = -1.0f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 2.0f));
-        box.velocity = {randomXVelocity, 0.0f, 0.0f};
+        box.velocity = { -1.0f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 2.0f)) , 0.0f, 0.0f };
 
         // Assign a random color to the box
         box.colour.x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
