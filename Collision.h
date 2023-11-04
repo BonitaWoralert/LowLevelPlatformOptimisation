@@ -1,7 +1,5 @@
 #pragma once
 #include "Box.h"
-#include "Vec3.h"
-
 
 class Collision
 {
