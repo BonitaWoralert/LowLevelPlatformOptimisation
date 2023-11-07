@@ -17,6 +17,9 @@
 #include "Vec3.h"
 #include "Box.h"
 #include "Collision.h"
+#include "MemoryTracker.h"
+
+MemoryTracker* tracker = MemoryTracker::getInstance();
 
 using namespace std::chrono;
 
@@ -300,6 +303,7 @@ void keyboard(unsigned char key, int x, int y) {
         }
     }
 }
+
 
 // the main function. 
 int main(int argc, char** argv) {
