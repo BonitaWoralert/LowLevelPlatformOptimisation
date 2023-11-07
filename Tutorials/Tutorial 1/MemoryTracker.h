@@ -1,12 +1,32 @@
 #pragma once
 
-static int AllocatedBytes;
+static int AllocatedBytes{ 0 };
 
 class MemoryTracker
 {
+private:
+	static MemoryTracker*
+		instancePtr;
+
+	MemoryTracker()
+	{
+	}
+
 public:
-	static void AddBytesAllocated(int numberOfBytes);
-	static void RemoveBytesAllocated(int numberOfBytes);
-	static int GetAllocated() { return AllocatedBytes; }
+	MemoryTracker(const MemoryTracker& obj)
+		= delete;
+
+	static MemoryTracker* getInstance()
+	{
+		if (instancePtr == nullptr)
+		{
+			instancePtr = new MemoryTracker();
+		}
+		return instancePtr;
+	}
+
+	static void AddBytesAllocated(size_t numberOfBytes) { AllocatedBytes += numberOfBytes; }
+	static void RemoveBytesAllocated(size_t numberOfBytes) { AllocatedBytes -= numberOfBytes;}
+	int GetAllocated() { return AllocatedBytes; }
 };
 

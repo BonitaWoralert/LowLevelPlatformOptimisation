@@ -3,23 +3,23 @@
 #include "StaticClass.h"
 #include "MemoryTracker.h"
 
+MemoryTracker* tracker = MemoryTracker::getInstance();
+
 int main()
 {
-    static MemoryTracker* defaultTracker = new MemoryTracker;
-
-    //delete[] pleaseFUCKINGWORK;
-
     //int* newArr = new int[10]; //allocate memory using new
 
     //int* mallocArr = (int*)malloc(sizeof(int) * 10); //allocate memory using malloc
 
     //MyObject* object = new MyObject(); //create class using new
 
-    //StaticClass* statics = new StaticClass(); //create class using new
+    /*
+    StaticClass* statics = new StaticClass(); //create class using new
 
-    /*statics->WriteToVector(1);
+    statics->WriteToVector(1);
     statics->WriteToVector(2);
-    statics->WriteToVector(3);*/
+    statics->WriteToVector(3);
+    */
 
     //int num = 7;
     //std::cout << "The number is " << num << std::endl;
@@ -32,6 +32,6 @@ int main()
 
     //delete object; //delete class using delete
 
-    // statics; //delete class using delete
-    
+    //delete statics; //delete class using delete
+    delete tracker;
 }

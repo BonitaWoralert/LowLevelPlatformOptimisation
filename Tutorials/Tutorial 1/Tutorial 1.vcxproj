@@ -128,7 +128,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MemAlloc.cpp" />
-    <ClCompile Include="MemoryTracker.cpp" />
     <ClCompile Include="MyObject.cpp" />
     <ClCompile Include="StaticClass.cpp" />
     <ClCompile Include="Tutorial 1.cpp" />
