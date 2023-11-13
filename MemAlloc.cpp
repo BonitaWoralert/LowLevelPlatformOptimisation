@@ -30,9 +30,9 @@ void* operator new (size_t size)
 	Header* pHeader = (Header*)pMem; //header pointer = start of allocated memory
 
 	pHeader->size = size; //set size int to the same as size passed into new
-	defaultTracker->AddBytesAllocated(size);
 	//pHeader->tracker = defaultTracker; //set memory tracker
 	//pHeader->tracker->AddBytesAllocated(size); //add bytes to memory tracker
+	defaultTracker->AddBytesAllocated(size);
 	
 	if (pLast != nullptr) 
 	{

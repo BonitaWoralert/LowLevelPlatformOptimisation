@@ -14,8 +14,10 @@ struct Footer
 	int checkValue;
 };
 
-static Header* pLast {}; //stores last header added to list
-static Header* pFirst {}; //first header in list
+//std::unique_ptr<Header> pLast;
+//std::unique_ptr<Header> pFirst;
+static Header* pLast {nullptr}; //stores last header added to list
+static Header* pFirst {nullptr}; //first header in list
 
 static int AllocatedBytes{ 0 };
 
@@ -41,7 +43,7 @@ public:
 		}
 		return instancePtr;
 	}
-	
+
 	static void WalkTheHeap();
 
 	static void AddBytesAllocated(size_t numberOfBytes) { AllocatedBytes += numberOfBytes; }
