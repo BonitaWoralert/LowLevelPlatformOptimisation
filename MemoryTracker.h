@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+
 
 static int AllocatedBytes{ 0 };
 
@@ -24,6 +26,8 @@ public:
 		}
 		return instancePtr;
 	}
+	
+	static void WalkTheHeap();
 
 	static void AddBytesAllocated(size_t numberOfBytes) { AllocatedBytes += numberOfBytes; }
 	static void RemoveBytesAllocated(size_t numberOfBytes) { AllocatedBytes -= numberOfBytes; }

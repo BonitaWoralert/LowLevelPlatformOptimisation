@@ -18,6 +18,7 @@
 #include "Box.h"
 #include "Collision.h"
 #include "MemoryTracker.h"
+#include "MemAlloc.h"
 
 MemoryTracker* tracker = MemoryTracker::getInstance();
 
@@ -301,6 +302,9 @@ void keyboard(unsigned char key, int x, int y) {
         for (Box& box : boxes) {
             box.velocity.y += impulseMagnitude;
         }
+    }
+    if (key == '1') { //1 key
+        //tracker->WalkTheHeap();
     }
 }
 

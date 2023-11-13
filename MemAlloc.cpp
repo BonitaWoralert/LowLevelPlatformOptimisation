@@ -1,4 +1,5 @@
 #include "MemAlloc.h"
+#include "HeaderFooter.h"
 #include <iostream>
 
 MemoryTracker* MemoryTracker::instancePtr = NULL;
@@ -18,6 +19,9 @@ struct Footer
 	int checkValue;
 };
 
+static Header* pLast {nullptr}; //stores last header added to list
+static Header* pFirst {nullptr}; //first header in list
+
 void* operator new (size_t size)
 {
 	std::cout << "\n\nNew called";
@@ -29,13 +33,25 @@ void* operator new (size_t size)
 	pHeader->size = size; //set size int to the same as size passed into new
 	pHeader->tracker = defaultTracker; //set memory tracker
 	pHeader->tracker->AddBytesAllocated(size); //add bytes to memory tracker
-
-	pHeader->checkValue = 0x4EADC0DE; //set header check value
+	
+	if (pLast != nullptr) 
+	{
+		pHeader->pPrev = pLast; //this header's previous header is pLast
+		pLast->pNext = pHeader; //previous header's next header is this one
+		pLast = pHeader; //now, this header is the last in the list.
+	}
+	else
+	{
+		//this header is the first and last in the list
+		pLast = pHeader;
+		pFirst = pHeader;
+	}
 
 	std::cout << "\nBytes requested: " << size << "\t\tTotal Allocated Bytes = " << pHeader->tracker->GetAllocated();
 	void* pFooterAddr = pMem + sizeof(Header) + size; //pointer to footer (start address + header + requested bytes)
 	Footer* pFooter = (Footer*)pFooterAddr; //footer pointer = end
 
+	pHeader->checkValue = 0x4EADC0DE; //set header check value
 	pFooter->checkValue = 0xF007C0DE; //set footer check value
 
 	std::cout << "\nHeader address: " << &pHeader << "\tFooter Address: " << &pFooter;
@@ -51,13 +67,17 @@ void operator delete (void* pMem)
 	Header* pHeader = (Header*)((char*)pMem - sizeof(Header)); //header = sizeof(Header) bytes before start
 	Footer* pFooter = (Footer*)((char*)pMem + pHeader->size); //footer
 
+	pHeader->pPrev->pNext = pHeader->pNext; //previous header's pNext is now current header's next
+	pHeader->pNext->pPrev = pHeader->pPrev; //next header's pPrev is now current header's prev
+
+	//checkvalues 
 	if (pHeader->checkValue == 0x4EADC0DE && pFooter->checkValue == 0xF007C0DE)
 	{
 		pHeader->tracker->RemoveBytesAllocated(pHeader->size);
 		std::cout << "\nBytes deleted: " << pHeader->size << "\t\tTotal Allocated Bytes = " << pHeader->tracker->GetAllocated();
 		free(pHeader);
 	}
-	else
+	else //checkvalues incorrect
 	{
 		if (pHeader->checkValue != 0x4EADC0DE && pFooter->checkValue != 0xF007C0DE)
 			std::cout << "\n\nCheck values incorrect in header and footer.\n\n";
@@ -66,5 +86,4 @@ void operator delete (void* pMem)
 		else
 			std::cout << "\n\nCheck values incorrect in footer.\n\n";
 	}
-
 }
