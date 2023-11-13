@@ -17,7 +17,7 @@ struct Footer
 
 void* operator new (size_t size)
 {
-	std::cout << "new is being called\n";
+	std::cout << "\n\nNew called";
 
 	size_t nRequestedBytes = size + sizeof(Header) + sizeof(Footer); //requested bytes + size of header + size of footer
 	char* pMem = (char*)malloc(nRequestedBytes); //allocate this
@@ -26,11 +26,11 @@ void* operator new (size_t size)
 	pHeader->size = size; //set size int to the same as size passed into new
 	pHeader->tracker = defaultTracker;
 	pHeader->tracker->AddBytesAllocated(size);
-	//std::cout << "Value in header in new = " << pHeader->size << std::endl;
-	std::cout << "Current bytes allocated = " << pHeader->tracker->GetAllocated() << std::endl;
-
+	std::cout << "\nBytes requested: " << size << "\t\tTotal Allocated Bytes = " << pHeader->tracker->GetAllocated();
 	void* pFooterAddr = pMem + sizeof(Header) + size; //pointer to footer (start address + header + requested bytes)
 	Footer* pFooter = (Footer*)pFooterAddr; //footer pointer = end
+
+	std::cout << "\nHeader address: " << &pHeader << "\tFooter Address: " << &pFooter;
 
 	void* pStartMemBlock = pMem + sizeof(Header); //start memory block = requested memory + header
 
@@ -39,12 +39,11 @@ void* operator new (size_t size)
 
 void operator delete (void* pMem)
 {
-	std::cout << "delete is being called\n";
+	std::cout << "\n\nDelete called";
 	Header* pHeader = (Header*)((char*)pMem - sizeof(Header)); //header = sizeof(Header) bytes before start
 	Footer* pFooter = (Footer*)((char*)pMem + pHeader->size); //footer
 
-	//std::cout << "Value in header on delete = " << pHeader->size << std::endl;
 	pHeader->tracker->RemoveBytesAllocated(pHeader->size);
-	std::cout << "Current bytes allocated = " << pHeader->tracker->GetAllocated() << std::endl;
+	std::cout << "\nBytes deleted: " << pHeader->size << "\t\tTotal Allocated Bytes = " << pHeader->tracker->GetAllocated();
 	free(pHeader);
 }
