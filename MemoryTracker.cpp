@@ -1,13 +1,13 @@
 #include "MemoryTracker.h"
-#include "HeaderFooter.h"
-//
-//void MemoryTracker::WalkTheHeap()
-//{
-//	Header* current = nullptr;
-//	
-//	while (current != pLast)
-//	{
-//		std::cout << "Header->prev = " << current->pPrev << "\tHeader->next = " << current->pNext;
-//		current = current->pNext;
-//	}
-//}
+
+void MemoryTracker::WalkTheHeap()
+{
+	Header* current = pFirst;
+	std::cout << "\n\n\n" << pLast;
+
+	while (current != pLast) //prob do this in a better way once it works
+	{
+		std::cout << "Header->prev = " << current->pPrev << "\tHeader->next = " << current->pNext;
+		current = current->pNext; 
+	} //also have to check checkValues.
+}

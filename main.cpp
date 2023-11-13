@@ -304,7 +304,7 @@ void keyboard(unsigned char key, int x, int y) {
         }
     }
     if (key == '1') { //1 key
-        //tracker->WalkTheHeap();
+        tracker->WalkTheHeap();
     }
 }
 

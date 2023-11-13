@@ -1,6 +1,21 @@
 #pragma once
 #include <iostream>
 
+struct Header
+{
+	int size; //size of main allocated section
+	int checkValue;
+	Header* pNext;
+	Header* pPrev;
+};
+
+struct Footer
+{
+	int checkValue;
+};
+
+static Header* pLast {}; //stores last header added to list
+static Header* pFirst {}; //first header in list
 
 static int AllocatedBytes{ 0 };
 
