@@ -7,8 +7,10 @@ MemoryTracker* defaultTracker = MemoryTracker::getInstance();
 struct Header
 {
 	int size; //size of main allocated section
-	MemoryTracker* tracker; //memory tracker used
 	int checkValue;
+	MemoryTracker* tracker; //memory tracker used
+	Header* pNext;
+	Header* pPrev;
 };
 
 struct Footer
