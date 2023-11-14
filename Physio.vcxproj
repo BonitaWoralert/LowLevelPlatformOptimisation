@@ -182,7 +182,6 @@
     <ClInclude Include="Box.h" />
     <ClInclude Include="Callbacks.h" />
     <ClInclude Include="Collision.h" />
-    <ClInclude Include="HeaderFooter.h" />
     <ClInclude Include="MemAlloc.h" />
     <ClInclude Include="MemoryTracker.h" />
     <ClInclude Include="resource.h" />

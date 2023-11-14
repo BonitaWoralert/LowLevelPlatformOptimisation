@@ -14,40 +14,42 @@ struct Footer
 	int checkValue;
 };
 
-//std::unique_ptr<Header> pLast;
-//std::unique_ptr<Header> pFirst;
-static Header* pLast {nullptr}; //stores last header added to list
-static Header* pFirst {nullptr}; //first header in list
-
 static int AllocatedBytes{ 0 };
+extern Header* pLast {nullptr}; //stores last header added to list
+extern Header* pFirst {nullptr}; //first header in list
 
 class MemoryTracker
 {
 private:
-	static MemoryTracker*
-		instancePtr;
 
 	MemoryTracker()
 	{
 	}
 
 public:
+	/*static Header* pLast;
+	static Header* pFirst;*/
+
 	MemoryTracker(const MemoryTracker& obj)
 		= delete;
 
-	static MemoryTracker* getInstance()
+	inline static void WalkTheHeap()
 	{
-		if (instancePtr == nullptr)
+		Header* current = pFirst;
+		std::cout << "\n\n\n" << pLast;
+		std::cout << "\n\n\n" << pFirst;
+
+		while (current != pLast) //prob do this in a better way once it works
 		{
-			instancePtr = new MemoryTracker();
-		}
-		return instancePtr;
+			std::cout << "Header->prev = " << current->pPrev << "\tHeader->next = " << current->pNext;
+			current = current->pNext;
+		} //also have to check checkValues.
 	}
 
-	static void WalkTheHeap();
-
-	static void AddBytesAllocated(size_t numberOfBytes) { AllocatedBytes += numberOfBytes; }
-	static void RemoveBytesAllocated(size_t numberOfBytes) { AllocatedBytes -= numberOfBytes; }
-	int GetAllocated() { return AllocatedBytes; }
+	inline static void AddBytesAllocated(size_t numberOfBytes) { AllocatedBytes += numberOfBytes; }
+	inline static void RemoveBytesAllocated(size_t numberOfBytes) { AllocatedBytes -= numberOfBytes; }
+	inline static int GetAllocated() { return AllocatedBytes; }
 };
 
+//Header* MemoryTracker::pFirst{nullptr};
+//Header* MemoryTracker::pLast{nullptr};

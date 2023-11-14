@@ -17,10 +17,9 @@
 #include "Vec3.h"
 #include "Box.h"
 #include "Collision.h"
-#include "MemoryTracker.h"
 #include "MemAlloc.h"
 
-MemoryTracker* tracker = MemoryTracker::getInstance();
+//MemoryTracker* tracker = MemoryTracker::getInstance();
 
 using namespace std::chrono;
 
