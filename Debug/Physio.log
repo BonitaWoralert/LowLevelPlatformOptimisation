@@ -1,7 +1,6 @@
 ﻿  MemAlloc.cpp
   main.cpp
   Generating Code...
-  LINK : C:\Users\w017620l.STUDENT\Documents\GitHub\physio-2023-24-BonitaWoralert\Debug\Physio.exe not found or not built by the last incremental link; performing full link
-MemAlloc.obj : error LNK2005: "struct Header * pLast" (?pLast@@3PAUHeader@@A) already defined in main.obj
-MemAlloc.obj : error LNK2005: "struct Header * pFirst" (?pFirst@@3PAUHeader@@A) already defined in main.obj
-C:\Users\w017620l.STUDENT\Documents\GitHub\physio-2023-24-BonitaWoralert\Debug\Physio.exe : fatal error LNK1169: one or more multiply defined symbols found
+  Physio.vcxproj -> C:\Users\w017620l.STUDENT\Documents\GitHub\physio-2023-24-BonitaWoralert\Debug\Physio.exe
+  C:\Users\w017620l.STUDENT\Documents\GitHub\physio-2023-24-BonitaWoralert\glut\bin\freeglut.dll
+  1 File(s) copied

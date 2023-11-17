@@ -15,8 +15,8 @@ struct Footer
 };
 
 static int AllocatedBytes{ 0 };
-extern Header* pLast {nullptr}; //stores last header added to list
-extern Header* pFirst {nullptr}; //first header in list
+static Header* pLast {nullptr}; //stores last header added to list
+static Header* pFirst {nullptr}; //first header in list
 
 class MemoryTracker
 {
@@ -33,13 +33,13 @@ public:
 	MemoryTracker(const MemoryTracker& obj)
 		= delete;
 
-	inline static void WalkTheHeap()
+	static void WalkTheHeap()
 	{
 		Header* current = pFirst;
 		std::cout << "\n\n\n" << pLast;
 		std::cout << "\n\n\n" << pFirst;
 
-		while (current != pLast) //prob do this in a better way once it works
+		while (current != pLast) //placeholder stuff
 		{
 			std::cout << "Header->prev = " << current->pPrev << "\tHeader->next = " << current->pNext;
 			current = current->pNext;
