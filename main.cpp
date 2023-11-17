@@ -24,7 +24,7 @@
 using namespace std::chrono;
 
 // this is the number of falling physical items. 
-#define NUMBER_OF_BOXES 5
+#define NUMBER_OF_BOXES 50
 
 // these is where the camera is, where it is looking and the bounds of the continaing box. You shouldn't need to alter these
 
@@ -48,6 +48,9 @@ const float gravity = -19.81f;
 std::vector<Box> boxes;
 
 void initScene(int boxCount) {
+    int* x = new int;
+    delete x;
+
     for (int i = 0; i < boxCount; ++i) {
         Box box;
 

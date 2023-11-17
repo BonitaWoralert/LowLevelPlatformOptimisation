@@ -9,9 +9,9 @@ void* operator new (size_t size)
 	char* pMem = (char*)malloc(nRequestedBytes); //allocate this
 	Header* pHeader = (Header*)pMem; //header pointer = start of allocated memory
 
+	pHeader->pNext = nullptr;
+	pHeader->pPrev = nullptr;
 	pHeader->size = size; //set size int to the same as size passed into new
-	//pHeader->tracker = defaultTracker; //set memory tracker
-	//pHeader->tracker->AddBytesAllocated(size); //add bytes to memory tracker
 	MemoryTracker::AddBytesAllocated(size);
 	
 	if (pLast != nullptr) 
@@ -45,19 +45,23 @@ void operator delete (void* pMem)
 {
 	std::cout << "\n\nDelete called";
 	Header* pHeader = (Header*)((char*)pMem - sizeof(Header)); //header = sizeof(Header) bytes before start
-	Footer* pFooter = (Footer*)((char*)pMem + pHeader->size); //footer
-
-	if (pHeader == pLast)
-		pLast = pHeader->pPrev; //if this is last in list, set a new last in list.
+	Footer* pFooter = (Footer*)((char*)pMem + pHeader->size); //footer		
 	
-	pHeader->pNext->pPrev = pHeader->pPrev; //next header's pPrev is now current header's prev
-	pHeader->pPrev->pNext = pHeader->pNext; //previous header's pNext is now current header's next
+	if (pHeader->pNext != NULL) //if this not is last in list: 
+	{
+		pHeader->pNext->pPrev = pHeader->pPrev; //next header's pPrev is now current header's prev
+		pHeader->pPrev->pNext = pHeader->pNext; //previous header's pNext is now current header's next
+	}
+	else //if this is last in list
+	{
+		pLast = pHeader->pPrev; //set a new last in list.
+		pHeader->pPrev->pNext = nullptr; //previous header's next becomes null
+	}
 
 	//checkvalues 
 	if (pHeader->checkValue == 0x4EADC0DE && pFooter->checkValue == 0xF007C0DE)
 	{
 		MemoryTracker::RemoveBytesAllocated(pHeader->size);
-		//pHeader->tracker->RemoveBytesAllocated(pHeader->size);
 		std::cout << "\nBytes deleted: " << pHeader->size << "\t\tTotal Allocated Bytes = " << MemoryTracker::GetAllocated();
 		free(pHeader);
 	}

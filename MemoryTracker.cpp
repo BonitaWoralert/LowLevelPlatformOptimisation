@@ -1,14 +1,18 @@
-//#include "MemoryTracker.h"
-//
-//void MemoryTracker::WalkTheHeap()
-//{
-//	Header* current = pFirst;
-//	std::cout << "\n\n\n" << pLast;
-//	std::cout << "\n\n\n" << pFirst;
-//
-//	while (current != pLast) //prob do this in a better way once it works
-//	{
-//		std::cout << "Header->prev = " << current->pPrev << "\tHeader->next = " << current->pNext;
-//		current = current->pNext; 
-//	} //also have to check checkValues.
-//}
+#include "MemoryTracker.h"
+
+Header* pLast { nullptr };
+Header* pFirst{ nullptr };
+
+void MemoryTracker::WalkTheHeap()
+{
+	Header* current = pFirst;
+
+	std::cout << "\n\nWalking the heap:\n";
+
+	while (current!=nullptr)
+	{
+		std::cout << "Current header: " << current << "\tSize in header: " << current->size << "\tPrev header: " << current->pPrev << "\tNext header: " << current->pNext <<
+			"\tCheck value: " << current->checkValue << std::endl;
+		current = current->pNext;
+	} //also have to check checkValues.
+}
