@@ -1,76 +1,9 @@
-// TODO 
-// Tidy and label the code
-// add memory chunks to the box
-// C++ it all
-// convert to PS4? (or make this a student task?) - check out the PS4 SDK samples
-// rename project etc. 
-
-
-#include <stdlib.h>
-#include <GL/glut.h>
-#include <vector>
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <chrono>
-
-#include "Vec3.h"
-#include "Box.h"
-#include "Collision.h"
-#include "MemAlloc.h"
-
-//MemoryTracker* tracker = MemoryTracker::getInstance();
-
-using namespace std::chrono;
-
-// this is the number of falling physical items. 
-#define NUMBER_OF_BOXES 50
-
-// these is where the camera is, where it is looking and the bounds of the continaing box. You shouldn't need to alter these
-
-#define LOOKAT_X 10
-#define LOOKAT_Y 10
-#define LOOKAT_Z 50
-
-#define LOOKDIR_X 10
-#define LOOKDIR_Y 0
-#define LOOKDIR_Z 0
-
-#define minX -10.0f
-#define maxX 30.0f
-#define minZ -30.0f
-#define maxZ 30.0f
-
-Collision* collision = new Collision;
-
-// gravity - change it and see what happens (usually negative!)
-const float gravity = -19.81f;
-std::vector<Box> boxes;
+#include "main.h"
 
 void initScene(int boxCount) {
-    int* x = new int;
-    delete x;
 
-    for (int i = 0; i < boxCount; ++i) {
-        Box box;
-
-        // Assign random x, y, and z positions within specified ranges
-        box.position.x = static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 20.0f));
-        box.position.y = 10.0f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 1.0f));
-        box.position.z = static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 20.0f));
-
-        box.size = {1.0f, 1.0f, 1.0f};
-
-        // Assign random x-velocity between -1.0f and 1.0f
-        box.velocity = { -1.0f + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 2.0f)) , 0.0f, 0.0f };
-
-        // Assign a random color to the box
-        box.colour.x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        box.colour.y = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        box.colour.z = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-
-        boxes.push_back(box);
-    }
+    collision = new Collision;
+    boxManager = new BoxManager(boxCount);
 }
 
 // a ray which is used to tap (by default, remove) a box - see the 'mouse' function for how this is used.
@@ -126,20 +59,23 @@ Vec3 screenToWorld(int x, int y) {
     return Vec3((float)posX, (float)posY, (float)posZ);
 }
 
-// update the physics: gravity, collision test, collision resolution
-void updatePhysics(const float deltaTime) {
-    const float floorY = 0.0f;
-
-
-    for (Box& box : boxes) {
-        // Update velocity due to gravity
+void Velocity(const float deltaTime)
+{
+    for (Box& box : boxManager->boxes)
+    {
         box.velocity.y += gravity * deltaTime;
-
-        // Update position based on velocity
         box.position.x += box.velocity.x * deltaTime;
         box.position.y += box.velocity.y * deltaTime;
         box.position.z += box.velocity.z * deltaTime;
+    }
+}
 
+void FloorAndWall(const float deltaTime)
+{
+    const float floorY = 0.0f;
+
+    for (Box& box : boxManager->boxes)
+    {
         // Check for collision with the floor
         if (box.position.y - box.size.y / 2.0f < floorY) {
             box.position.y = floorY + box.size.y / 2.0f;
@@ -154,14 +90,26 @@ void updatePhysics(const float deltaTime) {
         if (box.position.z - box.size.z / 2.0f < minZ || box.position.z + box.size.z / 2.0f > maxZ) {
             box.velocity.z = -box.velocity.z;
         }
+    }
+}
+
+// update the physics: gravity, collision test, collision resolution
+void updatePhysics(const float deltaTime) {
+
+    t1 = std::thread(Velocity, deltaTime);
+    t2 = std::thread(FloorAndWall, deltaTime);
+    //std::thread t1(Velocity, deltaTime);
+    //std::thread t2(FloorAndWall, deltaTime);
+    for (Box& box : boxManager->boxes) {
+        // Update velocity due to gravity
+        // Update position based on velocity
 
         // Check for collisions with other boxes
-        for (Box& other : boxes) {
+        for (Box& other : boxManager->boxes) {
             if (&box == &other) continue;
             if (collision->checkCollision(box, other)) {
                 collision->resolveCollision(box, other);
                 break;
-                   
             }
         }
     }
@@ -224,7 +172,7 @@ void drawScene() {
     Vec3 backWallV4(maxX, 0.0f, minZ);
     drawQuad(backWallV1, backWallV2, backWallV3, backWallV4);
 
-    for (const Box& box : boxes) {
+    for (const Box& box : boxManager->boxes) {
         drawBox(box);
     }
 }
@@ -275,10 +223,10 @@ void mouse(int button, int state, int x, int y) {
         size_t clickedBoxIndex = -1;
         float minIntersectionDistance = std::numeric_limits<float>::max();
 
-        for (size_t i = 0; i < boxes.size(); ++i) {
-            if (rayBoxIntersection(cameraPosition, rayDirection, boxes[i])) {
+        for (size_t i = 0; i < boxManager->boxes.size(); ++i) {
+            if (rayBoxIntersection(cameraPosition, rayDirection, boxManager->boxes[i])) {
                 // Calculate the distance between the camera and the intersected box
-                Vec3 diff = boxes[i].position - cameraPosition;
+                Vec3 diff = boxManager->boxes[i].position - cameraPosition;
                 float distance = diff.length();
 
                 // Update the clicked box index if this box is closer to the camera
@@ -291,7 +239,7 @@ void mouse(int button, int state, int x, int y) {
 
         // Remove the clicked box if any
         if (clickedBoxIndex != -1) {
-            boxes.erase(boxes.begin() + clickedBoxIndex);
+            boxManager->boxes.erase(boxManager->boxes.begin() + clickedBoxIndex);
         }
     }
 }
@@ -301,7 +249,7 @@ void keyboard(unsigned char key, int x, int y) {
     const float impulseMagnitude = 20.0f; // Upward impulse magnitude
 
     if (key == ' ') { // Spacebar key
-        for (Box& box : boxes) {
+        for (Box& box : boxManager->boxes) {
             box.velocity.y += impulseMagnitude;
         }
     }
@@ -336,6 +284,9 @@ int main(int argc, char** argv) {
     glutIdleFunc(idle);
 
     // it will stick here until the program ends. 
+    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS); //go back to main after we finish
     glutMainLoop();
+    std::cout << "\nim gonna kms";
+
     return 0;
 }

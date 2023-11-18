@@ -1,5 +1,5 @@
 #pragma once
-#include "Box.h"
+#include "Structs.h"
 
 class Collision
 {

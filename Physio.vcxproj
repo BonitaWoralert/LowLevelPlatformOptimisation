@@ -172,6 +172,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Box.cpp" />
+    <ClCompile Include="BoxManager.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MemAlloc.cpp" />
@@ -179,9 +181,11 @@
     <ClCompile Include="Vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Box.h" />
+    <ClInclude Include="Structs.h" />
+    <ClInclude Include="BoxManager.h" />
     <ClInclude Include="Callbacks.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="MemAlloc.h" />
     <ClInclude Include="MemoryTracker.h" />
     <ClInclude Include="resource.h" />
