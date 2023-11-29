@@ -3,7 +3,7 @@
 
 void* operator new (size_t size)
 {
-	std::cout << "\n\nNew called";
+	//std::cout << "\n\nNew called";
 
 	size_t nRequestedBytes = size + sizeof(Header) + sizeof(Footer); //requested bytes + size of header + size of footer
 	char* pMem = (char*)malloc(nRequestedBytes); //allocate this
@@ -27,14 +27,16 @@ void* operator new (size_t size)
 		pFirst = pHeader;
 	}
 
-	std::cout << "\nBytes requested: " << size << "\t\tTotal Allocated Bytes = " << MemoryTracker::GetAllocated();
+	
+	//std::cout << "\nBytes requested: " << size << "\t\tTotal Allocated Bytes = " << MemoryTracker::GetAllocated();
+	
 	void* pFooterAddr = pMem + sizeof(Header) + size; //pointer to footer (start address + header + requested bytes)
 	Footer* pFooter = (Footer*)pFooterAddr; //footer pointer = end
 
 	pHeader->checkValue = 0x4EADC0DE; //set header check value
 	pFooter->checkValue = 0xF007C0DE; //set footer check value
 
-	std::cout << "\nHeader address: " << &pHeader << "\tFooter Address: " << &pFooter;
+	//std::cout << "\nHeader address: " << &pHeader << "\tFooter Address: " << &pFooter;
 
 	void* pStartMemBlock = pMem + sizeof(Header); //start memory block = requested memory + header
 
@@ -43,7 +45,7 @@ void* operator new (size_t size)
 
 void operator delete (void* pMem)
 {
-	std::cout << "\n\nDelete called";
+	//std::cout << "\n\nDelete called";
 	Header* pHeader = (Header*)((char*)pMem - sizeof(Header)); //header = sizeof(Header) bytes before start
 	Footer* pFooter = (Footer*)((char*)pMem + pHeader->size); //footer		
 	
@@ -62,7 +64,7 @@ void operator delete (void* pMem)
 	if (pHeader->checkValue == 0x4EADC0DE && pFooter->checkValue == 0xF007C0DE)
 	{
 		MemoryTracker::RemoveBytesAllocated(pHeader->size);
-		std::cout << "\nBytes deleted: " << pHeader->size << "\t\tTotal Allocated Bytes = " << MemoryTracker::GetAllocated();
+		//std::cout << "\nBytes deleted: " << pHeader->size << "\t\tTotal Allocated Bytes = " << MemoryTracker::GetAllocated();
 		free(pHeader);
 	}
 	else //checkvalues incorrect

@@ -59,7 +59,7 @@ Vec3 screenToWorld(int x, int y) {
     return Vec3((float)posX, (float)posY, (float)posZ);
 }
 
-void Velocity(const float deltaTime)
+void Velocity()
 {
     for (Box& box : boxManager->boxes)
     {
@@ -70,7 +70,7 @@ void Velocity(const float deltaTime)
     }
 }
 
-void FloorAndWall(const float deltaTime)
+void FloorAndWall()
 {
     const float floorY = 0.0f;
 
@@ -94,12 +94,12 @@ void FloorAndWall(const float deltaTime)
 }
 
 // update the physics: gravity, collision test, collision resolution
-void updatePhysics(const float deltaTime) {
+void updatePhysics() {
 
-    t1 = std::thread(Velocity, deltaTime);
-    t2 = std::thread(FloorAndWall, deltaTime);
-    //std::thread t1(Velocity, deltaTime);
-    //std::thread t2(FloorAndWall, deltaTime);
+    t1 = std::thread(Velocity);
+    t2 = std::thread(FloorAndWall);
+    //Velocity();
+    //FloorAndWall();
     for (Box& box : boxManager->boxes) {
         // Update velocity due to gravity
         // Update position based on velocity
@@ -113,6 +113,8 @@ void updatePhysics(const float deltaTime) {
             }
         }
     }
+    t1.join();
+    t2.join();
 }
 
 // draw the sides of the containing area
@@ -197,9 +199,10 @@ void idle() {
     auto old = last;
     last = steady_clock::now();
     const duration<float> frameTime = last - old;
-    float deltaTime = frameTime.count();
+    deltaTime = frameTime.count();
 
-    updatePhysics(deltaTime);
+
+    updatePhysics();
 
     // tell glut to draw - note this will cap this function at 60 fps
     glutPostRedisplay();
@@ -256,6 +259,10 @@ void keyboard(unsigned char key, int x, int y) {
     if (key == '1') { //1 key
         MemoryTracker::WalkTheHeap();
     }
+    if (key == '2') // show fps
+    {
+        std::cout << "\nFPS = " << 1 / deltaTime << "\n"; 
+    }
 }
 
 
@@ -286,7 +293,6 @@ int main(int argc, char** argv) {
     // it will stick here until the program ends. 
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS); //go back to main after we finish
     glutMainLoop();
-    std::cout << "\nim gonna kms";
 
     return 0;
 }
