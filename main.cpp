@@ -96,14 +96,11 @@ void FloorAndWall()
 // update the physics: gravity, collision test, collision resolution
 void updatePhysics() {
 
-    t1 = std::thread(Velocity);
-    t2 = std::thread(FloorAndWall);
-    //Velocity();
-    //FloorAndWall();
+    /*t1 = std::thread(Velocity);
+    t2 = std::thread(FloorAndWall);*/
+    Velocity();
+    FloorAndWall();
     for (Box& box : boxManager->boxes) {
-        // Update velocity due to gravity
-        // Update position based on velocity
-
         // Check for collisions with other boxes
         for (Box& other : boxManager->boxes) {
             if (&box == &other) continue;
@@ -113,8 +110,8 @@ void updatePhysics() {
             }
         }
     }
-    t1.join();
-    t2.join();
+    /*t1.join();
+    t2.join();*/
 }
 
 // draw the sides of the containing area
@@ -256,9 +253,11 @@ void keyboard(unsigned char key, int x, int y) {
             box.velocity.y += impulseMagnitude;
         }
     }
+    #ifdef _DEBUG
     if (key == '1') { //1 key
         MemoryTracker::WalkTheHeap();
     }
+    #endif
     if (key == '2') // show fps
     {
         std::cout << "\nFPS = " << 1 / deltaTime << "\n"; 

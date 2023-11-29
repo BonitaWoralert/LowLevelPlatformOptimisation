@@ -1,5 +1,6 @@
 #include "MemAlloc.h"
 #include <iostream>
+#ifdef _DEBUG
 
 void* operator new (size_t size)
 {
@@ -77,3 +78,4 @@ void operator delete (void* pMem)
 			std::cout << "\n\nCheck values incorrect in footer.\n\n";
 	}
 }
+#endif
