@@ -4,7 +4,6 @@
 
 void* operator new (size_t size)
 {
-	//std::cout << "\n\nNew called";
 
 	size_t nRequestedBytes = size + sizeof(Header) + sizeof(Footer); //requested bytes + size of header + size of footer
 	char* pMem = (char*)malloc(nRequestedBytes); //allocate this
@@ -27,9 +26,6 @@ void* operator new (size_t size)
 		pLast = pHeader;
 		pFirst = pHeader;
 	}
-
-	
-	//std::cout << "\nBytes requested: " << size << "\t\tTotal Allocated Bytes = " << MemoryTracker::GetAllocated();
 	
 	void* pFooterAddr = pMem + sizeof(Header) + size; //pointer to footer (start address + header + requested bytes)
 	Footer* pFooter = (Footer*)pFooterAddr; //footer pointer = end
@@ -37,7 +33,11 @@ void* operator new (size_t size)
 	pHeader->checkValue = 0x4EADC0DE; //set header check value
 	pFooter->checkValue = 0xF007C0DE; //set footer check value
 
-	//std::cout << "\nHeader address: " << &pHeader << "\tFooter Address: " << &pFooter;
+	//uncomment to view details of memory allocation
+
+	/*std::cout << "\n\nNew called"
+	<< "\nBytes requested: " << size << "\t\tTotal Allocated Bytes = " << MemoryTracker::GetAllocated()
+	<< "\nHeader address: " << &pHeader << "\tFooter Address: " << &pFooter;*/
 
 	void* pStartMemBlock = pMem + sizeof(Header); //start memory block = requested memory + header
 

@@ -30,10 +30,6 @@ BoxManager::~BoxManager()
 
 void BoxManager::UpdateBoxPhysics(Box& box, const float deltaTime)
 {
-    //std::thread AAAAAAA(UpdateGravity, box, deltaTime);
-    //std::thread BBBBBBB(UpdateVelocity, box, deltaTime);
-    //AAAAAAA.join();
-    //BBBBBBB.join();
 }
 
 void BoxManager::UpdateGravity(const float deltaTime)

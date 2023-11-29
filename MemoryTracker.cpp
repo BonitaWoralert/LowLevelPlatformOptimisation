@@ -1,4 +1,5 @@
 #include "MemoryTracker.h"
+#ifdef _DEBUG
 
 Header* pLast { nullptr };
 Header* pFirst{ nullptr };
@@ -16,3 +17,5 @@ void MemoryTracker::WalkTheHeap()
 		current = current->pNext;
 	} //also have to check checkValues.
 }
+
+#endif

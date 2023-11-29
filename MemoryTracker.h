@@ -1,4 +1,5 @@
 #pragma once
+#ifdef _DEBUG
 #include <iostream>
 
 struct Header
@@ -36,3 +37,4 @@ public:
 	inline static void RemoveBytesAllocated(size_t numberOfBytes) { AllocatedBytes -= numberOfBytes; }
 	inline static int GetAllocated() { return AllocatedBytes; }
 };
+#endif
